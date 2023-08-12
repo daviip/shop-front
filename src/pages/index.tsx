@@ -13,7 +13,7 @@ export type Product = {
   name: string;
   description: string;
   price: string;
-  img: string;
+  image: string;
 };
 
 const fetchProducts = async () => {
@@ -42,6 +42,8 @@ const Home = () => {
       }
     }
   }, []);
+
+  console.log(data);
 
   return (
     <>

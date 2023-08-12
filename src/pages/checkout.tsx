@@ -28,7 +28,7 @@ const Checkout = () => {
     const res = await fetch("/api/order", {
       method: "POST",
       body: JSON.stringify({
-        user: user,
+        user: user?.toString(),
         price: totalPrice(),
       }),
     });
@@ -51,6 +51,8 @@ const Checkout = () => {
       });
     });
 
+    setCheckout([]);
+    localStorage.removeItem(user?.toString() ?? "");
     router.push("/");
   };
 

@@ -7,7 +7,7 @@ type Props = {
   name: string;
   description: string;
   price: string;
-  img: string;
+  image: string;
 };
 
 export const ProductItem = (props: Props) => {
@@ -20,7 +20,7 @@ export const ProductItem = (props: Props) => {
       <div className="w-80 border-gray-500 border-2 rounded-lg p-2">
         <div className="h-64 w-full relative">
           <Image
-            src={`${process.env.URL_BACK}/assets/${props.img}`}
+            src={`${process.env.URL_BACK}/assets/${props.image}`}
             alt={props.name}
             fill
           />

@@ -68,7 +68,7 @@ const Product = () => {
             id: data.id,
             name: data.name,
             price: data.price,
-            image: data.img,
+            image: data.image,
             amount: 1,
           },
         ];
@@ -85,7 +85,7 @@ const Product = () => {
           id: data.id,
           name: data.name,
           price: data.price,
-          image: data.img,
+          image: data.image,
           amount: 1,
         },
       ];
@@ -116,7 +116,7 @@ const Product = () => {
             <div className="flex gap-20 border-2 border-gray-200 rounded-lg">
               <div className="relative w-72 h-80 m-1 ">
                 <Image
-                  src={`${process.env.URL_BACK}/assets/${data.img}`}
+                  src={`${process.env.URL_BACK}/assets/${data.image}`}
                   alt={data.name}
                   fill
                 />
