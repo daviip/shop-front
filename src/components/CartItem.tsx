@@ -4,6 +4,7 @@ import { MdOutlineRestoreFromTrash } from "react-icons/md";
 import { useSetAtom } from "jotai";
 import { checkoutAtom } from "@/store/CheckoutAtom";
 import { converterStringToEuro } from "@/lib/converterStringToEuro";
+import { Button } from "./Button";
 
 type Props = {
   amount: number;
@@ -17,6 +18,31 @@ type Props = {
 export const CartItem = (props: Props) => {
   const [amount, setAmount] = useState(props.amount);
   const setCheckout = useSetAtom(checkoutAtom);
+
+  const changeAmountInput = (value: string) => {
+    if (Number(value) === 0 || value === "") {
+      setAmount(1);
+      return;
+    }
+
+    if (isNaN(Number(value))) {
+      return;
+    }
+
+    setAmount(Number(value));
+
+    setCheckout((checkout) => {
+      return checkout.map((item) => {
+        if (item.id === props.id) {
+          return {
+            ...item,
+            amount: Number(value),
+          };
+        }
+        return item;
+      });
+    });
+  };
 
   const addOne = () => {
     setAmount(amount + 1);
@@ -76,30 +102,34 @@ export const CartItem = (props: Props) => {
         </div>
       </div>
       <div className="flex gap-4 mr-4">
-        <button
-          className="flex items-center justify-center border-2 w-8 h-8 rounded-md"
+        <Button
+          className="flex items-center justify-center border-2 w-8 h-8 rounded-md bg-white text-gray-800 px-0"
           onClick={deleteProduct}
         >
           <MdOutlineRestoreFromTrash />
-        </button>
+        </Button>
 
-        {/* TODO:cambiar por un input */}
         <div className="flex">
-          <button
+          <Button
             disabled={amount === 1}
-            className="border-2 w-8 h-8 rounded-l-md"
+            className="bg-white border-2 w-8 h-8 rounded-r-none text-gray-800"
             onClick={deleteOne}
           >
             -
-          </button>
-          <div className="w-8 h-8 border-y-2 flex items-center justify-center">
-            {amount}
-          </div>
-          <button className="border-2 w-8 h-8 rounded-r-md" onClick={addOne}>
+          </Button>
+          <input
+            type="text"
+            value={amount}
+            onChange={(e) => changeAmountInput(e.target.value)}
+            className="w-8 h-8 border-y-2 flex items-center justify-center text-center"
+          />
+          <Button
+            className="bg-white border-2 w-8 h-8 rounded-l-none text-gray-800"
+            onClick={addOne}
+          >
             +
-          </button>
+          </Button>
         </div>
-        {/* TODO:cambiar por un input */}
       </div>
     </div>
   );
