@@ -70,7 +70,7 @@ const Checkout = () => {
     <>
       <Navbar openCart={openModal} setOpenCart={setOpenModal} />
       <div className="flex justify-center ">
-        <div className="flex justify-between max-w-7xl w-full mt-4">
+        <div className="flex flex-col lg:flex-row px-4 lg:px-0 justify-between lg:max-w-6xl w-full mt-4">
           <div className="flex flex-col justify-center gap-8">
             {checkout.map((item) => {
               return <CartItem key={item.id} {...item} />;

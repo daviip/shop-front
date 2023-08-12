@@ -43,8 +43,6 @@ const Home = () => {
     }
   }, []);
 
-  console.log(data);
-
   return (
     <>
       <Navbar openCart={openModal} setOpenCart={setOpenModal} />
@@ -52,7 +50,7 @@ const Home = () => {
         {isLoading ? (
           <div>Cargando...</div>
         ) : (
-          <div className="grid grid-cols-3 place-items-center gap-10 max-w-7xl">
+          <div className="grid grid-cols-1 lg:grid-cols-3 place-items-center gap-10 max-w-7xl">
             {data?.map((item) => {
               return <ProductItem key={item.id} {...item} />;
             })}

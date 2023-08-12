@@ -110,11 +110,11 @@ const Product = () => {
   return (
     <>
       <Navbar openCart={openModal} setOpenCart={setOpenModal} />
-      <div className="flex justify-center mt-10 ">
+      <div className="flex justify-center mt-10 px-4">
         {!isLoading && data ? (
           <div className="w-full max-w-3xl">
-            <div className="flex gap-20 border-2 border-gray-200 rounded-lg">
-              <div className="relative w-72 h-80 m-1 ">
+            <div className="flex flex-col lg:flex-row px-4 gap-20 border-2 border-gray-200 rounded-lg">
+              <div className="relative w-72 h-80 m-1 self-center">
                 <Image
                   src={`${process.env.URL_BACK}/assets/${data.image}`}
                   alt={data.name}

@@ -58,8 +58,8 @@ export const CartItem = (props: Props) => {
 
   return (
     <div
-      className={`flex items-center gap-4 border-2 w-[600px] justify-between rounded-lg ${
-        props.modal ? "mb-4 border-white w-full flex-col" : ""
+      className={`flex items-center gap-4 border-2 lg:w-[600px] justify-between rounded-lg ${
+        props.modal ? "mb-4 border-white w-full lg:w-full flex-col" : ""
       }`}
     >
       <div className="flex gap-4">

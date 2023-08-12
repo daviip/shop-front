@@ -9,13 +9,13 @@ type Props = {
 
 export const Navbar = (props: Props) => {
   return (
-    <div className="bg-gray-200 h-20 flex justify-between items-center px-10">
+    <div className="bg-gray-200 h-20 flex justify-between items-center px-10 w-screen">
       <Link
         href="/"
         className="flex items-center gap-4 text-gray-900 font-bold text-2xl"
       >
         <Image
-          src={`/assets/logo.jpeg`}
+          src="/assets/logo.jpeg"
           alt="logo"
           width={90}
           height={100}
