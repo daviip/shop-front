@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { GetServerSideProps } from "next/types";
@@ -7,11 +7,11 @@ import { useQuery } from "react-query";
 import { MdShoppingCart } from "react-icons/md";
 import { useAtom } from "jotai";
 import { type Product } from "./index";
-import { Navbar } from "@/components/Navbar";
 import { converterStringToEuro } from "@/lib/converterStringToEuro";
 import { Checkout, checkoutAtom } from "@/store/CheckoutAtom";
 import { Button } from "@/components/Button";
 import { CartModal } from "@/components/CartModal";
+import { openCartAtom } from "@/store/OpenCartAtom";
 
 export const fetchProduct = async (id: string) => {
   const response = await fetch(`/api/product?id=${id}`, {
@@ -28,7 +28,7 @@ export const fetchProduct = async (id: string) => {
 const Product = () => {
   const router = useRouter();
   const [checkout, setCheckout] = useAtom(checkoutAtom);
-  const [openModal, setOpenModal] = useState(false);
+  const [openCart, setOpenCart] = useAtom(openCartAtom);
 
   const idProduct = router.query.product as string;
 
@@ -100,16 +100,15 @@ const Product = () => {
   };
 
   const openModalSeconds = () => {
-    setOpenModal(true);
+    setOpenCart(true);
 
     setTimeout(() => {
-      setOpenModal(false);
+      setOpenCart(false);
     }, 3000);
   };
 
   return (
     <>
-      <Navbar openCart={openModal} setOpenCart={setOpenModal} />
       <div className="flex justify-center mt-10 px-4">
         {!isLoading && data ? (
           <div className="w-full max-w-3xl">
@@ -147,9 +146,7 @@ const Product = () => {
           <div>Cargando...</div>
         )}
       </div>
-      {openModal && (
-        <CartModal openCart={openModal} setOpenCart={setOpenModal} />
-      )}
+      {openCart && <CartModal openCart={openCart} setOpenCart={setOpenCart} />}
     </>
   );
 };

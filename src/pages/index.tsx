@@ -3,10 +3,10 @@ import { GetServerSideProps } from "next/types";
 import { getCookie } from "cookies-next";
 import { useQuery } from "react-query";
 import { CartModal } from "@/components/CartModal";
-import { Navbar } from "@/components/Navbar";
 import { ProductItem } from "@/components/ProductItem";
-import { useAtom, useSetAtom } from "jotai";
+import { useAtom } from "jotai";
 import { checkoutAtom } from "@/store/CheckoutAtom";
+import { openCartAtom } from "@/store/OpenCartAtom";
 
 export type Product = {
   id: string;
@@ -31,7 +31,7 @@ const fetchProducts = async () => {
 const Home = () => {
   const [checkout, setCheckout] = useAtom(checkoutAtom);
   const { data, isLoading } = useQuery("getProducts", fetchProducts);
-  const [openModal, setOpenModal] = useState(false);
+  const [openCart, setOpenCart] = useAtom(openCartAtom);
 
   useEffect(() => {
     if (!checkout || checkout.length === 0) {
@@ -45,7 +45,6 @@ const Home = () => {
 
   return (
     <>
-      <Navbar openCart={openModal} setOpenCart={setOpenModal} />
       <div className="flex justify-center mt-10 ">
         {isLoading ? (
           <div>Cargando...</div>
@@ -57,9 +56,7 @@ const Home = () => {
           </div>
         )}
       </div>
-      {openModal && (
-        <CartModal openCart={openModal} setOpenCart={setOpenModal} />
-      )}
+      {openCart && <CartModal openCart={openCart} setOpenCart={setOpenCart} />}
     </>
   );
 };

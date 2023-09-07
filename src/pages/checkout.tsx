@@ -1,18 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { GetServerSideProps } from "next/types";
 import { useRouter } from "next/router";
 import { getCookie } from "cookies-next";
 import { useAtom } from "jotai";
 import { Button } from "@/components/Button";
 import { CartItem } from "@/components/CartItem";
-import { Navbar } from "@/components/Navbar";
 import { converterStringToEuro } from "@/lib/converterStringToEuro";
 import { checkoutAtom } from "@/store/CheckoutAtom";
 
 const Checkout = () => {
   const [checkout, setCheckout] = useAtom(checkoutAtom);
   const router = useRouter();
-  const [openModal, setOpenModal] = useState(false);
 
   const totalPrice = () => {
     let total = 0;
@@ -68,7 +66,6 @@ const Checkout = () => {
 
   return (
     <>
-      <Navbar openCart={openModal} setOpenCart={setOpenModal} />
       <div className="flex justify-center ">
         <div className="flex flex-col lg:flex-row px-4 lg:px-0 justify-between lg:max-w-6xl w-full mt-4">
           <div className="flex flex-col justify-center gap-8">

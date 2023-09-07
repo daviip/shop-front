@@ -1,17 +1,18 @@
 import Link from "next/link";
 import Image from "next/image";
 import { MdShoppingCart } from "react-icons/md";
+import { useAtom } from "jotai";
+import { openCartAtom } from "@/store/OpenCartAtom";
+import { useRouter } from "next/router";
 
-type Props = {
-  openCart: boolean;
-  setOpenCart: (value: boolean) => void;
-};
+export const Navbar = () => {
+  const router = useRouter();
+  const [openCart, setOpenCart] = useAtom(openCartAtom);
 
-export const Navbar = (props: Props) => {
   return (
     <div className="bg-gray-200 h-20 flex justify-between items-center px-10 w-screen">
       <Link
-        href="/"
+        href={router.pathname !== "/login" ? "/" : ""}
         className="flex items-center gap-4 text-gray-900 font-bold text-2xl"
       >
         <Image
@@ -23,12 +24,14 @@ export const Navbar = (props: Props) => {
         />{" "}
         Wolf
       </Link>
-      <div
-        className="text-gray-800"
-        onClick={() => props.setOpenCart(!props.openCart)}
-      >
-        <MdShoppingCart />
-      </div>
+      {router.pathname !== "/login" && (
+        <div
+          className="text-gray-800 cursor-pointer"
+          onClick={() => setOpenCart(!openCart)}
+        >
+          <MdShoppingCart />
+        </div>
+      )}
     </div>
   );
 };
