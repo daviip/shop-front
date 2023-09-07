@@ -4,6 +4,8 @@ import { MdShoppingCart } from "react-icons/md";
 import { useAtom } from "jotai";
 import { openCartAtom } from "@/store/OpenCartAtom";
 import { useRouter } from "next/router";
+import { Button } from "./Button";
+import { logout } from "@/service/auth";
 
 export const Navbar = () => {
   const router = useRouter();
@@ -25,12 +27,22 @@ export const Navbar = () => {
         Wolf
       </Link>
       {router.pathname !== "/login" && (
-        <div
-          className="text-gray-800 cursor-pointer"
-          onClick={() => setOpenCart(!openCart)}
-        >
-          <MdShoppingCart />
-        </div>
+        <>
+          <Button
+            onClick={async () => {
+              await logout();
+              router.push("/login");
+            }}
+          >
+            Logout
+          </Button>
+          <div
+            className="text-gray-800 cursor-pointer"
+            onClick={() => setOpenCart(!openCart)}
+          >
+            <MdShoppingCart />
+          </div>
+        </>
       )}
     </div>
   );

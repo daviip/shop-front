@@ -7,6 +7,7 @@ import { Button } from "@/components/Button";
 import { CartItem } from "@/components/CartItem";
 import { converterStringToEuro } from "@/lib/converterStringToEuro";
 import { checkoutAtom } from "@/store/CheckoutAtom";
+import { newOrder } from "@/service/cart";
 
 const Checkout = () => {
   const [checkout, setCheckout] = useAtom(checkoutAtom);
@@ -18,40 +19,6 @@ const Checkout = () => {
       total = total + item.amount * Number(item.price);
     });
     return total.toString();
-  };
-
-  const newOrder = async () => {
-    const user = getCookie("user");
-
-    const res = await fetch("/api/order", {
-      method: "POST",
-      body: JSON.stringify({
-        user: user?.toString(),
-        price: totalPrice(),
-      }),
-    });
-
-    const { ok, id: orderId } = await res.json();
-
-    if (!ok) {
-      return;
-    }
-
-    checkout.map(async (item) => {
-      await fetch("/api/order-detail", {
-        method: "POST",
-        body: JSON.stringify({
-          amount: item.amount,
-          price_for_one: item.price,
-          order: orderId,
-          product: item.id,
-        }),
-      });
-    });
-
-    setCheckout([]);
-    localStorage.removeItem(user?.toString() ?? "");
-    router.push("/");
   };
 
   useEffect(() => {
@@ -81,7 +48,13 @@ const Checkout = () => {
               </span>
             </p>
 
-            <Button className="text-2xl rounded-xl mt-4" onClick={newOrder}>
+            <Button
+              className="text-2xl rounded-xl mt-4"
+              onClick={async () => {
+                await newOrder({ totalPrice, checkout, setCheckout });
+                router.push("/");
+              }}
+            >
               Realizar pedido
             </Button>
           </div>

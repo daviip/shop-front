@@ -12,6 +12,7 @@ import { Checkout, checkoutAtom } from "@/store/CheckoutAtom";
 import { Button } from "@/components/Button";
 import { CartModal } from "@/components/CartModal";
 import { openCartAtom } from "@/store/OpenCartAtom";
+import { addProduct } from "@/service/cart";
 
 export const fetchProduct = async (id: string) => {
   const response = await fetch(`/api/product?id=${id}`, {
@@ -35,69 +36,6 @@ const Product = () => {
   const { data, isLoading } = useQuery(["getProduct", idProduct], () =>
     fetchProduct(idProduct)
   );
-
-  const addProduct = () => {
-    if (!data?.id) {
-      return;
-    }
-
-    let newCheckout: Checkout[] = [];
-
-    if (checkout?.length > 0) {
-      if (checkout.some((item) => item.id === data.id)) {
-        newCheckout = checkout.map((item) => {
-          if (item.id === data.id) {
-            return {
-              ...item,
-              amount: item.amount + 1,
-            };
-          }
-          return item;
-        });
-
-        setCheckout(newCheckout);
-
-        localStorage.setItem(
-          getCookie("user")?.toString() ?? "",
-          JSON.stringify(newCheckout)
-        );
-      } else {
-        newCheckout = [
-          ...checkout,
-          {
-            id: data.id,
-            name: data.name,
-            price: data.price,
-            image: data.image,
-            amount: 1,
-          },
-        ];
-        setCheckout(newCheckout);
-
-        localStorage.setItem(
-          getCookie("user")?.toString() ?? "",
-          JSON.stringify(newCheckout)
-        );
-      }
-    } else {
-      newCheckout = [
-        {
-          id: data.id,
-          name: data.name,
-          price: data.price,
-          image: data.image,
-          amount: 1,
-        },
-      ];
-
-      setCheckout(newCheckout);
-
-      localStorage.setItem(
-        getCookie("user")?.toString() ?? "",
-        JSON.stringify(newCheckout)
-      );
-    }
-  };
 
   const openModalSeconds = () => {
     setOpenCart(true);
@@ -130,7 +68,11 @@ const Product = () => {
                 <Button
                   className="mb-4"
                   onClick={() => {
-                    addProduct();
+                    addProduct({
+                      checkout,
+                      setCheckout,
+                      data,
+                    });
                     openModalSeconds();
                   }}
                 >

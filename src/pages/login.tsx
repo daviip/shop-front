@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { setCookie } from "cookies-next";
 import { Button } from "@/components/Button";
+import { login as loginAuth, register as registerAuth } from "@/service/auth";
 
 type Form = {
   emailLogin?: string;
@@ -31,7 +32,10 @@ const Login = () => {
         }),
       });
 
-      const dataRegister = await responseRegister.json();
+      const dataRegister = await registerAuth({
+        email: formData.emailLogin ?? "",
+        password: formData.passwordLogin ?? "",
+      });
 
       if (!dataRegister.ok) {
         setError("passwordRegister", {
@@ -40,15 +44,10 @@ const Login = () => {
         return;
       }
 
-      const responseLogin = await fetch("/api/login", {
-        method: "POST",
-        body: JSON.stringify({
-          email: formData.emailLogin,
-          password: formData.passwordLogin,
-        }),
+      const dataLogin = await loginAuth({
+        email: formData.emailLogin ?? "",
+        password: formData.passwordLogin ?? "",
       });
-
-      const dataLogin = await responseLogin.json();
 
       setCookie("token", dataLogin.token);
       setCookie("user", dataLogin.user);
@@ -60,15 +59,10 @@ const Login = () => {
   };
 
   const onSubmitLogin = async (formData: Form) => {
-    const response = await fetch("/api/login", {
-      method: "POST",
-      body: JSON.stringify({
-        email: formData.emailLogin,
-        password: formData.passwordLogin,
-      }),
+    const data = await loginAuth({
+      email: formData.emailLogin ?? "",
+      password: formData.passwordLogin ?? "",
     });
-
-    const data = await response.json();
 
     if (!data.ok) {
       setError("passwordLogin", {
